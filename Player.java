@@ -13,8 +13,7 @@ public class Player {
 
 
     protected Hand hand;
-    ArrayList<Piece> possibleMoves;
-
+    ArrayList<Game.Move> possibleMoves;
 
     protected Piece highestPiece() {
         //HAND SHOULD ALREADY BE SORTED in ASC
@@ -32,8 +31,8 @@ public class Player {
         hand.print();
     }
     public void printMoves() {
-        for( Piece piece: possibleMoves) {
-            piece.print();
+        for( Game.Move move: possibleMoves) {
+            move.piece.print();
         }
     }
 
@@ -41,14 +40,14 @@ public class Player {
         this.name = "No Name";
         this.score = 0;
         this.hand = new Hand();
-        this.possibleMoves = new ArrayList<Piece>();
+        this.possibleMoves = new ArrayList<Game.Move>();
         return;
     }
     public Player(String name) {
         this.name = name;
         this.score = 0;
         this.hand = new Hand();
-        this.possibleMoves = new ArrayList<Piece>();
+        this.possibleMoves = new ArrayList<Game.Move>();
         return;
     }
 

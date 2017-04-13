@@ -22,6 +22,10 @@ public class Board {
         return score;
     }
 
+    public void makeMove(Piece piece) {
+        playedPieces.add(piece);
+
+    }
     public void updateOpenings() {
         if (playedPieces.size() == 1) {
             Piece firstPiece = playedPieces.get(0);

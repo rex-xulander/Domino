@@ -50,44 +50,48 @@ public class Game {
         //SET STATE TURN to Player with highest piece
         //TASK - CHANGE THIS TO A LAMBDA FUNCTION
         if (p1.highestPiece().greaterThan(p2.highestPiece())){
-            p1.possibleMoves.add(p1.highestPiece());
+            p1.possibleMoves.add(new Move(null,p1.highestPiece()));
             state = State.P1TURN;
         }
         else{
-            p2.possibleMoves.add(p2.highestPiece());
+            p2.possibleMoves.add(new Move(null, p2.highestPiece()));
             state = State.P2TURN;
         }
         return;
     }
     //TASK: USE TRY CATCH FOR THIS FUNCTIONALITY
-    public void play(int handIndex){
+    public void makeMove(int handIndex){
         //NEED TO CHECK FOR INVALID MOVES
         Player current = currentPlayer();
         Piece piece = current.hand.get(handIndex);
 
         //if it is a valid move
-        board.playedPieces.add(piece);
+        board.makeMove(piece);
         current.hand.remove(piece);
 
         board.updateOpenings();
-        int score = board.getScore();
-        if (score%5 == 0) {
-            current.addScore(score);
-        }
+        updatePlayerScore(current);
 
         return;
     }
 
+    public void updatePlayerScore(Player p) {
+        int score = board.getScore();
+        if (score%5 == 0) {
+            p.addScore(score);
+        }
+    }
     public void changePlayer() {
         state = (state == State.P1TURN) ? State.P2TURN : State.P1TURN;
         Player current = currentPlayer();
         updatePossibleMoves(current);
     }
 
-    private void updatePossibleMoves (Player p) {
-        p.possibleMoves.clear();
-        for(Piece piece : p.hand) {
-            if (piece.hasValue(board.left.value, board.right.value)) p.possibleMoves.add(piece);
+    private void updatePossibleMoves (Player player) {
+        player.possibleMoves.clear();
+        for(Piece piece : player.hand) {
+            if (piece.hasValue(board.left.value))    player.possibleMoves.add(new Move(board.left, piece));
+            if (piece.hasValue(board.right.value))   player.possibleMoves.add(new Move(board.right, piece));
         }
     }
 
@@ -110,6 +114,16 @@ public class Game {
     public void printBoard() {
         for (Piece piece: board.playedPieces) {
             piece.print();
+        }
+    }
+
+    public class Move {
+        Board.Opening opening;
+        Piece piece;
+
+        public Move (Board.Opening opening, Piece piece) {
+            this.opening = opening;
+            this.piece = piece;
         }
     }
 }

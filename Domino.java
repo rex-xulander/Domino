@@ -34,7 +34,7 @@ public class Domino
         System.out.print("\n\n" + "Enter move: ");
         int n = reader.nextInt();
 
-        game.play(n);
+        game.makeMove(n);
         game.print();
 
         game.changePlayer();

@@ -41,12 +41,11 @@ public class Piece
       }
   }
   //TASK CAN PROBABLY OPTIMIZE THIS
-  public boolean hasValue (short left, short right) {
-      short leftDots = this.left.getValue();
-      short rightDots = this.left.getValue();
+  public boolean hasValue (short openingValue) {
+      short leftValue = this.left.getValue();
+      short rightValue = this.left.getValue();
 
-      if (leftDots == left || leftDots == right) return true;
-      if (rightDots == left || rightDots == right) return true;
+      if (leftValue == openingValue || rightValue == openingValue) return true;
       return false;
   }
 

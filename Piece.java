@@ -26,22 +26,6 @@ public class Piece
       System.out.print("[" +left.value+ "|" +right.value+ "]");
   }
 
-  private class PieceComparator implements Comparator<Piece> {
-
-    public int compare (Piece p1, Piece p2) {
-
-      if (p1 instanceof Doublet && !(p2 instanceof Doublet)) {
-        return 1;
-      }
-      else if (!(p1 instanceof Doublet && p2 instanceof Doublet)) {
-        return -1;
-      }
-      else {
-        return p1.left.value > p2.left.value ? 1:-1;
-      }
-    }
-
-  }
 
   protected class End {
     protected Piece next;
@@ -50,6 +34,10 @@ public class Piece
     public End() {return;}
     public End(short value) {
       this.value = value;
+    }
+
+    public short getValue() {
+        return value;
     }
   }
 }

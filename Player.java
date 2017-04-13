@@ -1,4 +1,6 @@
+import java.util.Collections;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by Rex on 4/13/17.
@@ -10,22 +12,9 @@ public class Player {
 
     protected Hand hand;
 
-    /*The player with the highest piece plays first in domino when first starting a game.
-     *The player with the highest doublet plays first, or if neither player has a doublet, then
-     *the piece with the highest point value is played next.
-     */
-    /*
-    protected Piece highestPiece() {
-        short highestDoublet = -1;
-
-        for (Piece piece : hand) {
-            if (piece instanceof Tile && tile.end1 > highestDoublet) {
-                highestDoublet = tile.end1;
-            }
-        }
-
-        return highestDoublet;
-    }*/
+    protected void sortHand() {
+        hand.sort();
+    }
 
     public Player() {
         this.name = "No Name";
@@ -44,6 +33,7 @@ public class Player {
     public class Hand extends ArrayList<Piece> {
 
         final static short HAND_SIZE = 7;
+            //Collections.sort(this, new PieceComparator());
 
         public void print() {
             if (this == null) return;
@@ -53,6 +43,9 @@ public class Player {
             }
 
             return;
+        }
+        private void sort() {
+            Collections.sort(this, new PieceComparator());
         }
 
         public Hand() {

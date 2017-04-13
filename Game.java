@@ -6,9 +6,7 @@ public class Game {
     Player p2;
     Dealer dealer;
 
-    PlayedSet playedSet;
-
-    short spinner;
+    boolean hasSpinner;
 
     public enum State { START, P1TURN, P2TURN, END }
 
@@ -20,13 +18,10 @@ public class Game {
         this.p1 = new Player();
         this.p2 = new Player();
 
-        this.playedSet = new PlayedSet();
+        this.hasSpinner = false;
 
         dealer.dealFullHand(p1.hand);
         dealer.dealFullHand(p2.hand);
-
-        //TASK: CREATE METHOD FOR HIGHEST DOMINO!
-
     }
 
     public void print() {

@@ -52,8 +52,7 @@ public class Deck extends ArrayList<Piece>
         return lower + (int) (Math.random()*(higher-lower)+1);
     }
 
-    public Deck()
-    {
+    public Deck() {
         super();
 
         //Creates all tiles and puts them into deck

@@ -36,7 +36,7 @@ public class Board {
         playedPieces = new ArrayList<Piece>();
     }
 
-    private class Opening {
+    public class Opening {
         short value;
         Piece open;
 

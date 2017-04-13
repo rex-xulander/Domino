@@ -69,7 +69,6 @@ public class Game {
         board.playedPieces.add(piece);
         current.hand.remove(piece);
 
-
         board.updateOpenings();
         int score = board.getScore();
         if (score%5 == 0) {
@@ -78,10 +77,19 @@ public class Game {
 
         return;
     }
+
     public void changePlayer() {
         state = (state == State.P1TURN) ? State.P2TURN : State.P1TURN;
+        Player current = currentPlayer();
+        updatePossibleMoves(current);
     }
 
+    private void updatePossibleMoves (Player p) {
+        p.possibleMoves.clear();
+        for(Piece piece : p.hand) {
+            if (piece.hasValue(board.left.value, board.right.value)) p.possibleMoves.add(piece);
+        }
+    }
 
     /* Basic GUI using System.IO */
     public void print() {

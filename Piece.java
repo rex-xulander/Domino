@@ -15,7 +15,6 @@ public class Piece
   public Piece () {
     return;
   }
-
   public Piece (int a, int b) {
     left = new End((short) a);
     right = new End((short) b);
@@ -40,6 +39,15 @@ public class Piece
           if (this.right.getValue() == other.right.getValue()) return this.left.getValue() > other.left.getValue() ? true : false;
           else return this.right.getValue() > other.right.getValue() ? true : false;
       }
+  }
+  //TASK CAN PROBABLY OPTIMIZE THIS
+  public boolean hasValue (short left, short right) {
+      short leftDots = this.left.getValue();
+      short rightDots = this.left.getValue();
+
+      if (leftDots == left || leftDots == right) return true;
+      if (rightDots == left || rightDots == right) return true;
+      return false;
   }
 
   protected class End {

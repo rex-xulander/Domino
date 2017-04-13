@@ -7,12 +7,19 @@ import java.util.Comparator;
  */
 public class Player {
 
+    /* Information variables */
     public String name;
     private int score;
-    ArrayList<Piece> possibleMoves;
+
 
     protected Hand hand;
+    ArrayList<Piece> possibleMoves;
 
+
+    protected Piece highestPiece() {
+        //HAND SHOULD ALREADY BE SORTED in ASC
+        return hand.get(hand.size()-1);
+    }
     protected void sortHand() {
         hand.sort();
     }
@@ -20,21 +27,14 @@ public class Player {
         this.score += points;
     }
 
-
     public void print() {
         System.out.print(name+": " +score+ "\n");
         hand.print();
     }
-
     public void printMoves() {
         for( Piece piece: possibleMoves) {
             piece.print();
         }
-    }
-
-    protected Piece highestPiece() {
-        //HAND SHOULD ALREADY BE SORTED in ASC
-        return hand.get(hand.size()-1);
     }
 
     public Player() {
@@ -44,7 +44,6 @@ public class Player {
         this.possibleMoves = new ArrayList<Piece>();
         return;
     }
-
     public Player(String name) {
         this.name = name;
         this.score = 0;

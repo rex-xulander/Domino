@@ -16,6 +16,15 @@ public class Player {
     protected void sortHand() {
         hand.sort();
     }
+    public void addScore(int points) {
+        this.score += points;
+    }
+
+
+    public void print() {
+        System.out.print(name+": " +score+ "\n");
+        hand.print();
+    }
 
     public void printMoves() {
         for( Piece piece: possibleMoves) {
@@ -40,6 +49,7 @@ public class Player {
         this.name = name;
         this.score = 0;
         this.hand = new Hand();
+        this.possibleMoves = new ArrayList<Piece>();
         return;
     }
 

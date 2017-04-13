@@ -13,6 +13,15 @@ public class Board {
     Opening up;
     Opening down;
 
+    public int getScore() {
+        int score = 0;
+        if (left != null)   score+=left.value;
+        if (right != null)  score+=right.value;
+        if (up != null)     score+=up.value;
+        if (down != null)   score+=down.value;
+        return score;
+    }
+
     public void updateOpenings() {
         if (playedPieces.size() == 1) {
             Piece firstPiece = playedPieces.get(0);

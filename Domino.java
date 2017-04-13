@@ -37,7 +37,7 @@ public class Domino
         game.play(n);
         game.print();
 
-        game.state = Game.State.END;
+        game.changePlayer();
     }
 
 

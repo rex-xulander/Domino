@@ -10,18 +10,22 @@ public class Player {
 
     protected Hand hand;
 
-    //Get value of highest double tile in hand, or return -1 if none exist
-    protected short highestDoublet() {
+    /*The player with the highest piece plays first in domino when first starting a game.
+     *The player with the highest doublet plays first, or if neither player has a doublet, then
+     *the piece with the highest point value is played next.
+     */
+    /*
+    protected Piece highestPiece() {
         short highestDoublet = -1;
 
-        for (Tile tile : hand) {
-            if (tile.isDoublet && tile.end1 > highestDoublet) {
+        for (Piece piece : hand) {
+            if (piece instanceof Tile && tile.end1 > highestDoublet) {
                 highestDoublet = tile.end1;
             }
         }
 
         return highestDoublet;
-    }
+    }*/
 
     public Player() {
         this.name = "No Name";
@@ -37,15 +41,15 @@ public class Player {
         return;
     }
 
-    public class Hand extends ArrayList<Tile> {
+    public class Hand extends ArrayList<Piece> {
 
         final static short HAND_SIZE = 7;
 
         public void print() {
             if (this == null) return;
 
-            for(Tile tile : this) {
-                tile.print();
+            for(Piece piece : this) {
+                piece.print();
             }
 
             return;

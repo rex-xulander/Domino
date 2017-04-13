@@ -4,14 +4,14 @@ import java.math.*;
 /**
  * Created by Rex on 4/12/17.
  */
-public class Deck extends ArrayList<Tile>
+public class Deck extends ArrayList<Piece>
 {
 
     protected void print() {
         if (this == null) return;
 
-        for(Tile tile : this) {
-            tile.print();
+        for(Piece piece : this) {
+            piece.print();
         }
 
         return;
@@ -33,14 +33,14 @@ public class Deck extends ArrayList<Tile>
         for (int i=0; i<this.size(); i++) {
             int k = rand(0, i);
             //Swap i with random index k
-            Tile temp = this.get(i);
+            Piece temp = this.get(i);
             this.set(i, this.get(k));
             this.set(k, temp);
         }
     }
 
-    protected Tile pop() {
-        Tile top = this.get(size()-1);
+    protected Piece pop() {
+        Piece top = this.get(size()-1);
         this.remove(size()-1);
         return top;
     }
@@ -57,9 +57,9 @@ public class Deck extends ArrayList<Tile>
         //Creates all tiles and puts them into deck
         //28 total tiles with end values from [0,6]
         //6 double tiles, 22 non-double tiles
-        for (short i = Tile.MIN_TILE; i <= Tile.MAX_TILE; i++){
-            for (short j=i; j<= Tile.MAX_TILE; j++) {
-                if (i==j) 	this.add(new Tile(i, j, true));
+        for (short i = Tile.MIN_PIECE; i <= Tile.MAX_PIECE; i++){
+            for (short j=i; j<= Tile.MAX_PIECE; j++) {
+                if (i==j) 	this.add(new Doublet(i, j));
                 else 		this.add(new Tile(i, j));
             }
         }

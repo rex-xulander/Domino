@@ -4,8 +4,8 @@
 public class Game {
     Player p1;
     Player p2;
+    Dealer dealer;
 
-    Deck deck;
     PlayedSet playedSet;
 
     short spinner;
@@ -15,16 +15,15 @@ public class Game {
     public State state;
 
     public Game() {
-        this.deck = new Deck();
-        deck.shuffle();
-
-        this.playedSet = new PlayedSet();
+        this.dealer = new Dealer();
 
         this.p1 = new Player();
         this.p2 = new Player();
 
-        dealHand(deck, p1.hand);
-        dealHand(deck, p2.hand);
+        this.playedSet = new PlayedSet();
+
+        dealer.dealFullHand(p1.hand);
+        dealer.dealFullHand(p2.hand);
 
         //TASK: CREATE METHOD FOR HIGHEST DOMINO!
 
@@ -43,29 +42,8 @@ public class Game {
         System.out.println();
 
         System.out.println("Remaining tiles from Boneyard:");
-        deck.prettyPrint();
+        dealer.deck.prettyPrint();
 
     }
 
-    //Deals from the deck to a hand by popping off top Tile from deck
-    //Because deck is already shuffled, these tiles are essentially random
-    private void deal (Deck deck, Player.Hand hand, int quantity) {
-        if(quantity < 1) return;
-        if(deck == null || hand == null) return;
-
-        for(int i=0; i<quantity; i++){
-            hand.add(deck.pop());
-        }
-        return;
-    }
-
-    private void dealHand (Deck deck, Player.Hand hand) {
-        deal(deck, hand, Player.Hand.HAND_SIZE);
-        return;
-    }
-
-    private void draw (Deck deck, Player.Hand hand) {
-        deal(deck, hand, 1);
-        return;
-    }
 }

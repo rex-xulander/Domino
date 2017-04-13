@@ -21,11 +21,26 @@ public class Piece
     right = new End((short) b);
   }
 
-
   protected void print() {
       System.out.print("[" +left.value+ "|" +right.value+ "]");
   }
 
+  public boolean greaterThan (Piece other) {
+      if (this instanceof Doublet && other instanceof Tile) {
+          return true;
+      }
+      else if (this instanceof Tile && other instanceof Doublet) {
+          return false;
+      }
+      else if (this instanceof Doublet && other instanceof Doublet){
+          return this.right.getValue() > other.right.getValue() ? true : false;
+      }
+      else {
+          //Case: both pieces are standard tiles
+          if (this.right.getValue() == other.right.getValue()) return this.left.getValue() > other.left.getValue() ? true : false;
+          else return this.right.getValue() > other.right.getValue() ? true : false;
+      }
+  }
 
   protected class End {
     protected Piece next;

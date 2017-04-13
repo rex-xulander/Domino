@@ -6,6 +6,7 @@ import java.util.Comparator;
 public class PieceComparator implements Comparator<Piece> {
 
     //TASK: make this more elegant / clean it up
+    //also figure out how to use greater than to figure it out!
     public int compare(Piece p1, Piece p2) {
 
         if (p1 instanceof Doublet && p2 instanceof Tile) {

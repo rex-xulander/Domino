@@ -19,15 +19,28 @@ public class Domino
     game.start();
     game.print();
 
-    /*Scanner reader = new Scanner(System.in);  // Reading from System.in
-    System.out.println(); System.out.println();
-    System.out.println("PLAYER 1 TO MOVE: ");
-    int n = reader.nextInt();*/
+    while(game.isNotOver()) {
+
+        System.out.println();
+
+        if(game.player1toMove()){
+            System.out.println("PLAYER 1 TURN");
+            System.out.println("Possible moves: "); game.p1.printMoves();
+        }
+        if(game.player2toMove()){
+            System.out.println("PLAYER 2 TURN");
+            System.out.println("Possible moves: "); game.p2.printMoves();
+        }
+
+        Scanner reader = new Scanner(System.in);
+        System.out.print("\n\n" + "Enter move: ");
+        int n = reader.nextInt();
+
+        game.state = Game.State.END;
+    }
 
 
     return;
-
-
   }
 
 }

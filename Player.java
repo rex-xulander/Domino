@@ -9,11 +9,18 @@ public class Player {
 
     public String name;
     private int score;
+    ArrayList<Piece> possibleMoves;
 
     protected Hand hand;
 
     protected void sortHand() {
         hand.sort();
+    }
+
+    public void printMoves() {
+        for( Piece piece: possibleMoves) {
+            piece.print();
+        }
     }
 
     protected Piece highestPiece() {
@@ -25,6 +32,7 @@ public class Player {
         this.name = "No Name";
         this.score = 0;
         this.hand = new Hand();
+        this.possibleMoves = new ArrayList<Piece>();
         return;
     }
 

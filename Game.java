@@ -8,6 +8,11 @@ public class Game {
 
     boolean hasSpinner;
 
+    Opening left;
+    Opening right;
+    Opening up;
+    Opening down;
+
     public enum State { START, P1TURN, P2TURN, END }
 
     public State state;
@@ -39,6 +44,16 @@ public class Game {
         System.out.println("Remaining tiles from Boneyard:");
         dealer.deck.prettyPrint();
 
+    }
+
+    private class Opening {
+        short value;
+        Piece open;
+
+        public Opening(Piece open, short value) {
+            this.open = open;
+            this.value = value;
+        }
     }
 
 }

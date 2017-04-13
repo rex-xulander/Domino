@@ -22,7 +22,7 @@ public class Domino
     System.out.println(); System.out.println();
     System.out.println("PLAYER 1 TO MOVE: ");
     int n = reader.nextInt();*/
-      
+
     return;
 
 

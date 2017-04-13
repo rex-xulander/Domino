@@ -4,6 +4,8 @@ import java.math.*;
 /**
  * Created by Rex on 4/12/17.
  */
+
+//TASK: REFACTOR DECK AS DEALER INNER CLASS
 public class Deck extends ArrayList<Piece>
 {
 

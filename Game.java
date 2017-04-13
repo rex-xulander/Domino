@@ -24,9 +24,6 @@ public class Game {
         this.p2 = new Player();
 
         this.hasSpinner = false;
-
-        dealer.dealFullHand(p1.hand);
-        dealer.dealFullHand(p2.hand);
     }
 
     public void print() {
@@ -44,6 +41,17 @@ public class Game {
         System.out.println("Remaining tiles from Boneyard:");
         dealer.deck.prettyPrint();
 
+    }
+
+    public void start() {
+        dealer.dealFullHand(p1.hand);
+        dealer.dealFullHand(p2.hand);
+
+        p1.sortHand();
+        p2.sortHand();
+
+        System.out.print("p1 highest piece is : "); p1.highestPiece().print();
+        System.out.print("p2 highest piece is : "); p2.highestPiece().print();
     }
 
     private class Opening {

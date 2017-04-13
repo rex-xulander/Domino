@@ -16,6 +16,11 @@ public class Player {
         hand.sort();
     }
 
+    protected Piece highestPiece() {
+        //HAND SHOULD ALREADY BE SORTED in ASC
+        return hand.get(hand.size()-1);
+    }
+
     public Player() {
         this.name = "No Name";
         this.score = 0;

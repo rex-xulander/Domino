@@ -44,19 +44,12 @@ public class Piece
       return false;
   }
 
-    /*protected class End {
-    protected Piece next;
-    private int value;
+  public void flip() {
+      int temp = left;
+      left = right;
+      right = temp;
+  }
 
-    public End() {return;}
-    public End(int value) {
-      this.value = value;
-    }
-
-    public int getValue() {
-        return value;
-    }
-  }*/
 
     public static class Normal extends Piece {
 

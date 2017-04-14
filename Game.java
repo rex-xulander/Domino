@@ -112,8 +112,7 @@ public class Game {
         System.out.println();
         System.out.println();
 
-        System.out.println("Remaining tiles from Boneyard:");
-        dealer.deck.prettyPrint();
+        System.out.println("Remaining tiles from Boneyard: "+dealer.deck.size());
     }
     public void printBoard() {
         for (Piece piece: board.playedPieces) {

@@ -1,6 +1,5 @@
 import java.util.Collections;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * Created by Rex on 4/13/17.
@@ -53,8 +52,8 @@ public class Player {
 
     public class Hand extends ArrayList<Piece> {
 
-        final static short HAND_SIZE = 7;
-            //Collections.sort(this, new PieceComparator());
+        final static int HAND_SIZE = 7;
+            //Collections.sort(this, new Piece.PieceComparator());
 
         public void print() {
             if (this == null) return;
@@ -66,7 +65,7 @@ public class Player {
             return;
         }
         private void sort() {
-            Collections.sort(this, new PieceComparator());
+            Collections.sort(this, new Piece.PieceComparator());
         }
 
         public Hand() {

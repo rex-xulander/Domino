@@ -50,26 +50,25 @@ public class Game {
         //SET STATE TURN to Player with highest piece
         //TASK - CHANGE THIS TO A LAMBDA FUNCTION
         if (p1.highestPiece().greaterThan(p2.highestPiece())){
-            p1.possibleMoves.add(new Move(null,p1.highestPiece()));
+            p1.possibleMoves.add(new Move(0,p1.highestPiece()));
             state = State.P1TURN;
         }
         else{
-            p2.possibleMoves.add(new Move(null, p2.highestPiece()));
+            p2.possibleMoves.add(new Move(0, p2.highestPiece()));
             state = State.P2TURN;
         }
         return;
     }
     //TASK: USE TRY CATCH FOR THIS FUNCTIONALITY
-    public void makeMove(int handIndex){
+    public void makeMove(int moveIndex){
         //NEED TO CHECK FOR INVALID MOVES
         Player current = currentPlayer();
-        Piece piece = current.hand.get(handIndex);
+        Move move = current.possibleMoves.get(moveIndex);
 
         //if it is a valid move
-        board.makeMove(piece);
-        current.hand.remove(piece);
+        board.makeMove(move);
+        current.hand.remove(move.piece);
 
-        board.updateOpenings();
         updatePlayerScore(current);
 
         return;
@@ -90,8 +89,8 @@ public class Game {
     private void updatePossibleMoves (Player player) {
         player.possibleMoves.clear();
         for(Piece piece : player.hand) {
-            if (piece.hasValue(board.left.value))    player.possibleMoves.add(new Move(board.left, piece));
-            if (piece.hasValue(board.right.value))   player.possibleMoves.add(new Move(board.right, piece));
+            if (piece.hasValue(board.leftOpening))    player.possibleMoves.add(new Move(board.leftOpening, piece));
+            if (piece.hasValue(board.rightOpening))   player.possibleMoves.add(new Move(board.rightOpening, piece));
         }
     }
 
@@ -118,10 +117,10 @@ public class Game {
     }
 
     public class Move {
-        Board.Opening opening;
+        int opening;
         Piece piece;
 
-        public Move (Board.Opening opening, Piece piece) {
+        public Move (int opening, Piece piece) {
             this.opening = opening;
             this.piece = piece;
         }

@@ -1,9 +1,5 @@
 import java.util.Comparator;
 
-/**
- * Created by Rex on 4/12/17.
- */
-
 public class Piece
 {
   final static int MIN_PIECE = 0;

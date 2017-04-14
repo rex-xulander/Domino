@@ -17,27 +17,35 @@ public class Domino
     Game game = new Game();
 
     game.start();
-    game.print();
+    Scanner reader = new Scanner(System.in);
 
     while(game.isNotOver()) {
 
+        game.print();
         System.out.println();
 
-        if(game.player1toMove()){
-            System.out.println("Possible moves for P1: "); game.p1.printMoves();
+        Player player = game.isPlayer1Turn() ? game.p1:game.p2;
+        Player other = game.isPlayer1Turn() ? game.p2:game.p1;
+
+        System.out.println("Moves for "+player.name);
+        player.printMoves();
+
+        if (player.hasNoMoves()) {
+            game.draw(player);
+            System.out.println("NO LEGAL MOVES");
+            String random = reader.next();
+            game.updatePossibleMoves(player);
         }
-        if(game.player2toMove()){
-            System.out.println("Possible moves for P2: "); game.p2.printMoves();
+        else {
+            System.out.print("\n\n" + "Enter move: ");
+            int n = reader.nextInt();
+
+            System.out.println();
+            game.makeMove(n);
+
+            game.updatePossibleMoves(other);
+            game.changePlayer();
         }
-
-        Scanner reader = new Scanner(System.in);
-        System.out.print("\n\n" + "Enter move: ");
-        int n = reader.nextInt();
-
-        game.makeMove(n);
-        game.print();
-
-        game.changePlayer();
     }
 
 

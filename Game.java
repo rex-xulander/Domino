@@ -2,6 +2,8 @@
  * Created by Rex on 4/13/17.
  */
 
+import org.jetbrains.annotations.Contract;
+
 import java.util.ArrayList;
 
 public class Game {
@@ -29,15 +31,7 @@ public class Game {
     public boolean isNotOver() {
         return (state != State.END);
     }
-    public boolean player1toMove() {
-        return (state == State.P1TURN);
-    }
-    public boolean player2toMove() { return (state == State.P2TURN); }
-    private Player currentPlayer() {
-        if (this.state == State.P1TURN) return p1;
-        if (this.state == State.P2TURN) return p2;
-        return null;
-    }
+    public boolean isPlayer1Turn() { return (state == State.P1TURN); }
 
     /* GAME ACTIONS */
     public void start() {
@@ -47,30 +41,39 @@ public class Game {
         p1.sortHand();
         p2.sortHand();
 
-        //SET STATE TURN to Player with highest piece
-        //TASK - CHANGE THIS TO A LAMBDA FUNCTION
-        if (p1.highestPiece().greaterThan(p2.highestPiece())){
-            p1.possibleMoves.add(new Move(0,p1.highestPiece()));
+        Piece p1Highest = p1.highestPiece();
+        Piece p2Highest = p2.highestPiece();
+
+        if (p1Highest.greaterThan(p2Highest)) {
+            p1.possibleMoves.add(new FirstMove(p1Highest));
             state = State.P1TURN;
-        }
-        else{
-            p2.possibleMoves.add(new Move(0, p2.highestPiece()));
+        } else {
+            p2.possibleMoves.add(new FirstMove(p2Highest));
             state = State.P2TURN;
         }
+
+
         return;
     }
-    //TASK: USE TRY CATCH FOR THIS FUNCTIONALITY
     public void makeMove(int moveIndex){
-        //NEED TO CHECK FOR INVALID MOVES
-        Player current = currentPlayer();
-        Move move = current.possibleMoves.get(moveIndex);
+        //TODO: validate move
 
-        //if it is a valid move
-        board.makeMove(move);
-        current.hand.remove(move.piece);
+        if(state == State.P1TURN) {
+            makeMove(p1, p1.possibleMoves.get(moveIndex));
+            return;
+        } else if (state == State.P2TURN) {
+            makeMove(p2, p2.possibleMoves.get(moveIndex));
+            return;
+        }
+    }
+    private void makeMove(Player p, Move m) {
+        board.placePiece(m);
+        p.hand.remove(m.piece);
 
-        updatePlayerScore(current);
-
+        updatePlayerScore(p);
+    }
+    public void draw(Player player) {
+        dealer.dealSingleTile(player.hand);
         return;
     }
 
@@ -81,12 +84,14 @@ public class Game {
         }
     }
     public void changePlayer() {
-        state = (state == State.P1TURN) ? State.P2TURN : State.P1TURN;
-        Player current = currentPlayer();
-        updatePossibleMoves(current);
+        if(state == State.P1TURN) {
+            state = State.P2TURN;
+        } else {
+            state = State.P1TURN;
+        }
     }
 
-    private void updatePossibleMoves (Player player) {
+    public void updatePossibleMoves (Player player) {
         player.possibleMoves.clear();
         for(Piece piece : player.hand) {
             if (piece.hasValue(board.leftOpening))    player.possibleMoves.add(new Move(board.leftOpening, piece));
@@ -120,8 +125,21 @@ public class Game {
         int opening;
         Piece piece;
 
+        public Move () { return; }
+
         public Move (int opening, Piece piece) {
             this.opening = opening;
+            this.piece = piece;
+        }
+
+        public int newOpening() {
+            //return the side of the tile that is now open
+            return (piece.left == opening) ? piece.right:piece.left;
+        }
+    }
+
+    public class FirstMove extends Move {
+        public FirstMove (Piece piece) {
             this.piece = piece;
         }
     }

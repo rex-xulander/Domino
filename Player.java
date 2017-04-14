@@ -10,7 +10,6 @@ public class Player {
     public String name;
     private int score;
 
-
     protected Hand hand;
     ArrayList<Game.Move> possibleMoves;
 
@@ -24,9 +23,10 @@ public class Player {
     public void addScore(int points) {
         this.score += points;
     }
+    public boolean hasNoMoves() { return possibleMoves.isEmpty(); }
 
     public void print() {
-        System.out.print(name+": " +score+ "\n");
+        System.out.print(name+": " +score+ "\t\t\t");
         hand.print();
     }
     public void printMoves() {

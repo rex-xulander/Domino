@@ -32,6 +32,12 @@ public class Game {
         return (state != State.END);
     }
     public boolean isPlayer1Turn() { return (state == State.P1TURN); }
+    public Player getCurrentPlayer() {
+        return isPlayer1Turn() ? p1:p2;
+    }
+    public Player getOtherPlayer() {
+        return isPlayer1Turn() ? p2:p1;
+    }
 
     /* GAME ACTIONS */
     public void start() {
@@ -94,8 +100,8 @@ public class Game {
     public void updatePossibleMoves (Player player) {
         player.possibleMoves.clear();
         for(Piece piece : player.hand) {
-            if (piece.hasValue(board.leftOpening))    player.possibleMoves.add(new Move(board.leftOpening, piece));
-            if (piece.hasValue(board.rightOpening))   player.possibleMoves.add(new Move(board.rightOpening, piece));
+            if (piece.hasValue(board.leftOpening.value()))    player.possibleMoves.add(new Move(board.leftOpening.value(), piece));
+            if (piece.hasValue(board.rightOpening.value()))   player.possibleMoves.add(new Move(board.rightOpening.value(), piece));
         }
     }
 
@@ -120,6 +126,7 @@ public class Game {
         }
     }
 
+    //INNER CLASSES
     public class Move {
         int opening;
         Piece piece;
@@ -136,7 +143,6 @@ public class Game {
             return (piece.left == opening) ? piece.right:piece.left;
         }
     }
-
     public class FirstMove extends Move {
         public FirstMove (Piece piece) {
             this.piece = piece;

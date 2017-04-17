@@ -24,8 +24,8 @@ public class Domino
         game.print();
         System.out.println();
 
-        Player player = game.isPlayer1Turn() ? game.p1:game.p2;
-        Player other = game.isPlayer1Turn() ? game.p2:game.p1;
+        Player player = game.getCurrentPlayer();
+        Player other = game.getOtherPlayer();
 
         System.out.println("Moves for "+player.name);
         player.printMoves();

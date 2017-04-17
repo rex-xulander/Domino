@@ -22,6 +22,10 @@ public class Piece
       System.out.print("[" +left+ "|" +right+ "]");
   }
 
+  public boolean isDoublet() {
+      return this instanceof Doublet;
+  }
+
   public boolean greaterThan (Piece other) {
       if (this instanceof Doublet && other instanceof Normal) {
           return true;

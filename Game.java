@@ -102,6 +102,10 @@ public class Game {
         for(Piece piece : player.hand) {
             if (piece.hasValue(board.leftOpening.value()))    player.possibleMoves.add(new Move(board.leftOpening.value(), piece));
             if (piece.hasValue(board.rightOpening.value()))   player.possibleMoves.add(new Move(board.rightOpening.value(), piece));
+            if(board.upOpening != null && board.downOpening != null) {
+                if (piece.hasValue(board.upOpening.value()))    player.possibleMoves.add(new Move(board.upOpening.value(), piece));
+                if (piece.hasValue(board.downOpening.value()))   player.possibleMoves.add(new Move(board.downOpening.value(), piece));
+            }
         }
     }
 
@@ -149,3 +153,6 @@ public class Game {
         }
     }
 }
+
+
+//TODO MOVES AND OPENINGS ARE THE SAME THING SO CONSOLIDATE THEM

@@ -9,22 +9,31 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 public class Board {
 
-    boolean hasSpinner;
     LinkedBlockingDeque<Piece> playedPieces;
 
     Opening leftOpening;
     Opening rightOpening;
+    Opening upOpening;
+    Opening downOpening;
+
+    Piece spinner;
 
     public int getScore() {
-        return leftOpening.score()+rightOpening.score();
+        int score = leftOpening.score() + rightOpening.score();
+        if(upOpening != null && downOpening != null) {
+            if(upOpening.piece != spinner)  score += upOpening.score();
+            if(downOpening.piece != spinner) score += downOpening.score();
+        }
+        return score;
     }
 
     public void placePiece(Game.Move move) {
         Piece playedPiece = move.piece;
 
+
         if(move instanceof Game.FirstMove) {
-            leftOpening = new Opening(playedPiece.left, playedPiece.isDoublet());
-            rightOpening = new Opening(playedPiece.right, playedPiece.isDoublet());
+            leftOpening = new Opening(playedPiece.left, playedPiece);
+            rightOpening = new Opening(playedPiece.right, playedPiece);
             playedPieces.add(playedPiece);
         }
         else {
@@ -35,7 +44,7 @@ public class Board {
                     playedPiece.flip();
                 }
 
-                leftOpening.set(move.newOpening(), move.piece.isDoublet());
+                leftOpening.set(move.newOpening(), move.piece);
                 playedPieces.addFirst(playedPiece);
             } else if (move.opening == rightOpening.value()) {
 
@@ -43,20 +52,31 @@ public class Board {
                     playedPiece.flip();
                 }
 
-                rightOpening.set(move.newOpening(), move.piece.isDoublet());
+                rightOpening.set(move.newOpening(), move.piece);
                 playedPieces.addLast(playedPiece);
             }
         }
 
+        //IF IT IS FIRST DOUBLET PLAYED, SET IT AS SPINNER
+        if(spinner == null && playedPiece.isDoublet()) {
+            spinner = playedPiece;
+        }
+
+        if(spinner != null && leftOpening.piece != spinner && rightOpening.piece != spinner && upOpening == null && downOpening == null) {
+            upOpening = new Opening(spinner.left, spinner);
+            downOpening = new Opening(spinner.right, spinner);
+        }
+
     }
+
 
     public class Opening {
         private int value;
-        private boolean isDoublet;
+        private Piece piece;
 
-        public Opening (int value, boolean isDoublet) {
+        public Opening (int value, Piece piece) {
             this.value = value;
-            this.isDoublet = isDoublet;
+            this.piece = piece;
             return;
         }
 
@@ -65,23 +85,22 @@ public class Board {
         }
 
         public int score() {
-            if (isDoublet) return 2*value;
+            if (piece.isDoublet() && playedPieces.size() != 1) return 2*value;
             else return value;
         }
 
         public boolean isDoublet() {
-            return isDoublet;
+            return piece.isDoublet();
         }
 
-        public void set(int value, boolean isDoublet) {
+        public void set(int value, Piece piece) {
             this. value = value;
-            this.isDoublet = isDoublet;
+            this.piece = piece;
             return;
         }
     }
 
     public Board() {
-        this.hasSpinner = false;
         playedPieces = new LinkedBlockingDeque<Piece>();
     }
 }

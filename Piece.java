@@ -26,6 +26,7 @@ public class Piece
       return this instanceof Doublet;
   }
 
+
   public boolean greaterThan (Piece other) {
       if (this instanceof Doublet && other instanceof Normal) {
           return true;
@@ -70,8 +71,10 @@ public class Piece
         //End left;
         //End right;
 
-        int up;
-        int down;
+        private boolean isSpinner = false;
+
+        public void setSpinner() { isSpinner = true; }
+        public boolean isSpinner() { return isSpinner; }
 
         public Doublet () {
             return;
@@ -80,7 +83,6 @@ public class Piece
         public Doublet (int a, int b) {
             super(a, b);
         }
-
     }
 
     public static class PieceComparator implements Comparator<Piece> {

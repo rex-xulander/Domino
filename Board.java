@@ -50,12 +50,20 @@ public class Board {
     private boolean hasSpinner() {
         return (spinner!=null);
     }
-    public int getScore() {
+    private boolean isFirstMove() { return (playedPieces_horizontal.size() ==1); }
+    public int boardScore() {
+        if (isFirstMove() && hasSpinner()) {
+            return 2*spinner.left;
+        }
+
         int score = 0;
         for(Opening opening: openings) {
-            //Vertical openings are only counted if a piece has been played on the spinner
-            if (!((opening.direction == Direction.UP || opening.direction == Direction.DOWN) && (opening.piece == spinner)))
-                score += opening.value();
+            //Don't count vertical openings unless piece is played on spinner
+            if (opening.isVertical() && opening.piece == spinner) {
+                score += 0;
+            } else {
+                score += opening.pointValue();
+            }
         }
         return score;
     }
@@ -109,32 +117,34 @@ public class Board {
     }
 
     public class Opening {
-        private int value;
+        private int connectingValue;
         private Piece piece;
         private Direction direction;
 
         public Opening(int value, Piece piece, Direction direction) {
-            this.value = value;
+            this.connectingValue = value;
             this.piece = piece;
             this.direction = direction;
             return;
         }
 
-        public int value() {
-            return value;
+        public int connectingValue() {
+            return connectingValue;
         }
-        public int score() {
-            if (piece.isDoublet() && playedPieces_horizontal.size() != 1) return 2*value;
-            else return value;
+        public int pointValue() {
+            return piece.isDoublet() ? (2*connectingValue) : connectingValue;
         }
         public Direction direction() {return direction;}
+        public boolean isVertical() {
+            return (direction == Direction.UP || direction == Direction.DOWN);
+        }
 
         public Piece piece() {
             return piece;
         }
 
         private void update(int value, Piece piece) {
-            this.value = value;
+            this.connectingValue = value;
             this.piece = piece;
             return;
         }

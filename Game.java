@@ -80,7 +80,7 @@ public class Game {
     }
 
     public void updatePlayerScore(Player p) {
-        int score = board.getScore();
+        int score = board.boardScore();
         if (score%5 == 0) {
             p.addScore(score);
         }
@@ -97,8 +97,8 @@ public class Game {
         player.possibleMoves.clear();
         for(Piece pieceInHand : player.hand) {
             for(Board.Opening opening: board.openings) {
-                if(pieceInHand.hasValue(opening.value())) {
-                    player.possibleMoves.add(new Move(opening.value(), opening.piece(), pieceInHand));
+                if(pieceInHand.hasValue(opening.connectingValue())) {
+                    player.possibleMoves.add(new Move(opening.connectingValue(), opening.piece(), pieceInHand));
                 }
             }
         }
@@ -110,14 +110,13 @@ public class Game {
         System.out.println();
         p2.print();
         System.out.println();
+        System.out.println("Remaining tiles from Boneyard: "+dealer.deck.size());
 
         //BOARD SPACE OF 6 LINES
         System.out.println();
         printBoard();
         System.out.println();
         System.out.println();
-
-        System.out.println("Remaining tiles from Boneyard: "+dealer.deck.size());
     }
     public void printBoard() {
 
@@ -156,7 +155,3 @@ public class Game {
         }
     }
 }
-
-// a move should contain an placed piece and the connectingValue piece you are referring to
-
-//TODO MOVES AND OPENINGS ARE THE SAME THING SO CONSOLIDATE THEM

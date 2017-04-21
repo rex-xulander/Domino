@@ -27,18 +27,16 @@ public class Domino
         Player player = game.getCurrentPlayer();
         Player other = game.getOtherPlayer();
 
-        System.out.println("Moves for "+player.name);
         player.printMoves();
 
         if (player.hasNoMoves()) {
             game.draw(player);
-            System.out.println("NO LEGAL MOVES");
+            System.out.println("No legal moves");
             String random = reader.next();
             game.updatePossibleMoves(player);
         }
         else {
-            System.out.println("\n\n"+"Same piece moves orderd by LRUD");
-            System.out.print("Enter move (1 to end): ");
+            System.out.println("\n"+"Enter move "+player.name+":");
             int n = reader.nextInt();
 
             //TODO: if there are two spinner openings, L and U moves are played first because of checking order

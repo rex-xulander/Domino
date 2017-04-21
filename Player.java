@@ -31,7 +31,7 @@ public class Player {
     }
     public void printMoves() {
         for( Game.Move move: possibleMoves) {
-            move.piece.print();
+            move.playerPiece.print();
         }
     }
 

@@ -2,10 +2,6 @@
  * Created by Rex on 4/13/17.
  */
 
-import org.jetbrains.annotations.Contract;
-
-import java.util.ArrayList;
-
 public class Game {
     Player p1;
     Player p2;
@@ -74,7 +70,7 @@ public class Game {
     }
     private void makeMove(Player p, Move m) {
         board.placePiece(m);
-        p.hand.remove(m.piece);
+        p.hand.remove(m.playerPiece);
 
         updatePlayerScore(p);
     }
@@ -99,12 +95,11 @@ public class Game {
 
     public void updatePossibleMoves (Player player) {
         player.possibleMoves.clear();
-        for(Piece piece : player.hand) {
-            if (piece.hasValue(board.leftOpening.value()))    player.possibleMoves.add(new Move(board.leftOpening.value(), piece));
-            if (piece.hasValue(board.rightOpening.value()))   player.possibleMoves.add(new Move(board.rightOpening.value(), piece));
-            if(board.upOpening != null && board.downOpening != null) {
-                if (piece.hasValue(board.upOpening.value()))    player.possibleMoves.add(new Move(board.upOpening.value(), piece));
-                if (piece.hasValue(board.downOpening.value()))   player.possibleMoves.add(new Move(board.downOpening.value(), piece));
+        for(Piece pieceInHand : player.hand) {
+            for(Board.Opening opening: board.openings) {
+                if(pieceInHand.hasValue(opening.value())) {
+                    player.possibleMoves.add(new Move(opening.value(), opening.piece(), pieceInHand));
+                }
             }
         }
     }
@@ -125,34 +120,44 @@ public class Game {
         System.out.println("Remaining tiles from Boneyard: "+dealer.deck.size());
     }
     public void printBoard() {
-        for (Piece piece: board.playedPieces) {
+
+        System.out.print("LEFT AND RIGHT: ");
+        for (Piece piece: board.playedPieces_horizontal) {
+            piece.print();
+        }
+        System.out.println();
+        System.out.print("UP AND DOWN: ");
+        for (Piece piece: board.playedPieces_vertical) {
             piece.print();
         }
     }
 
     //INNER CLASSES
     public class Move {
-        int opening;
-        Piece piece;
+        int connectingValue;
+        Piece targetOpening; //the opening, played piece on the board
+        Piece playerPiece;
 
         public Move () { return; }
 
-        public Move (int opening, Piece piece) {
-            this.opening = opening;
-            this.piece = piece;
+        public Move (int connectingValue, Piece boardPiece, Piece playerPiece) {
+            this.connectingValue = connectingValue;
+            this.targetOpening = boardPiece;
+            this.playerPiece = playerPiece;
         }
 
-        public int newOpening() {
+        public int nonConnectingValue() {
             //return the side of the tile that is now open
-            return (piece.left == opening) ? piece.right:piece.left;
+            return (playerPiece.left == connectingValue) ? playerPiece.right:playerPiece.left;
         }
     }
     public class FirstMove extends Move {
         public FirstMove (Piece piece) {
-            this.piece = piece;
+            this.playerPiece = piece;
         }
     }
 }
 
+// a move should contain an placed piece and the connectingValue piece you are referring to
 
 //TODO MOVES AND OPENINGS ARE THE SAME THING SO CONSOLIDATE THEM

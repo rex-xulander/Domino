@@ -7,6 +7,7 @@
 //********************************************
 
 //TODO: allow for multiple rounds within a game
+//TODO: if blocked game, set turn to player with highest piece
 //TODO: create AI for game
 
 import java.util.Scanner;
@@ -22,11 +23,15 @@ public class Domino
   {
 
     Game game = new Game();
-
-    game.start();
     Scanner reader = new Scanner(System.in);
 
+    game.start();
+
     while(game.isNotOver()) {
+
+        if(game.timeForNextRound()) {
+            game.newRound();
+        }
 
         game.print();
         System.out.println();
@@ -65,13 +70,14 @@ public class Domino
             System.out.println();
             game.makeMove(n-1);
 
-            game.checkForVictor();
+            game.checkGameStatus();
 
             //TODO: no need to do this if Game is OVER
             game.updatePossibleMoves(otherPlayer);
             game.changePlayer();
         }
     }
+
 
 
     return;

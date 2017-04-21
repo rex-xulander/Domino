@@ -8,24 +8,67 @@ public class Game {
     Board board;
 
     public enum Turn { P1TURN, P2TURN }
-    public enum State { Play, Pass, End }
+    public enum State { Play, Pass, Blocked, P1Finish, P2Finish, GameOver }
 
     public Turn turn;
     public State state;
 
+
+    //Constructors
     public Game() {
         //Create all person agents
-        this.dealer = new Dealer();
         this.p1 = new Player("REX");
         this.p2 = new Player("MER");
+        this.dealer = new Dealer();
 
         //Generate playing board
         this.board = new Board();
     }
+    public Game(Player one, Player two) {
+        this.p1 = one;
+        this.p2 = two;
+        this.dealer = new Dealer();
 
-    /* Game Status Information */
+        this.board = new Board();
+    }
+    public void newRound() {
+
+        p1.clearHand(); p2.clearHand();
+        this.dealer = new Dealer();
+        this.board = new Board();
+        dealer.dealFullHand(p1.hand);
+        dealer.dealFullHand(p2.hand);
+
+        p1.sortHand();
+        p2.sortHand();
+
+        if (state == State.P1Finish) {
+            turn = Turn.P1TURN;
+            for(Piece piece: p1.hand) {
+                p1.possibleMoves.add(new FirstMove(piece));
+            }
+        } else if (state == State.P2Finish) {
+            turn = Turn.P2TURN;
+            for(Piece piece: p2.hand) {
+                p2.possibleMoves.add(new FirstMove(piece));
+            }
+        } else if (state == State.Blocked) {
+            Piece p1Highest = p1.highestPiece();
+            Piece p2Highest = p2.highestPiece();
+
+            if (p1Highest.greaterThan(p2Highest)) {
+                p1.possibleMoves.add(new FirstMove(p1Highest));
+                turn = Turn.P1TURN;
+            } else {
+                p2.possibleMoves.add(new FirstMove(p2Highest));
+                turn = Turn.P2TURN;
+            }
+        }
+    }
+
+    //Game Status
     public boolean isNotOver() {
-        return (state != State.End);
+        return (state != State.GameOver);
     }
     public boolean isPlayer1Turn() { return (turn == Turn.P1TURN); }
     public Player getCurrentPlayer() {
@@ -35,7 +78,7 @@ public class Game {
         return isPlayer1Turn() ? p2:p1;
     }
 
-    /* GAME ACTIONS */
+
     //Deals hands to both players and sets turn to player with highest piece
     public void start() {
         dealer.dealFullHand(p1.hand);
@@ -58,7 +101,6 @@ public class Game {
 
         return;
     }
-    //Reads in move choice from IO
     public void makeMove(int moveIndex){
         //TODO: validate move with GUI
         state = State.Play;
@@ -105,12 +147,17 @@ public class Game {
         }
     }
 
-    public void checkForVictor() {
-        if (p1.finishedHand() || p2.finishedHand()) {
-            state = State.End;
+    public void checkGameStatus() {
+        if (p1.finishedHand()) {
+            state = State.P1Finish; return;
         }
-        if (p1.score() == Domino.WINNING_SCORE || p2.score() == Domino.WINNING_SCORE) {
-            state = State.End;
+        if (p2.finishedHand()) {
+            state = State.P2Finish; return;
+        }
+        if (p1.score() >= Domino.WINNING_SCORE || p2.score() >= Domino.WINNING_SCORE) {
+            Player winningPlayer = p1.score() > p2.score() ? p1:p2;
+            System.out.println("CONGRATULATIONS "+winningPlayer.name);
+            state = State.GameOver;
         }
         return;
     }
@@ -122,8 +169,11 @@ public class Game {
         }
     }
 
-    /* Basic GUI using System.IO */
     public void print() {
+        for(int i=1; i<60; i++){
+            System.out.print("-");
+        }
+        System.out.println("");
         p1.print();
         System.out.println();
         p2.print();
@@ -148,7 +198,12 @@ public class Game {
             piece.print();
         }
     }
-    //INNER CLASSES
+
+    public boolean timeForNextRound() {
+        return (state == State.P2Finish || state == State.P1Finish || state == State.Blocked);
+    }
+
+    //Inner Classes
     public class Move {
         int connectingValue;
         Piece targetOpening; //the opening, played piece on the board

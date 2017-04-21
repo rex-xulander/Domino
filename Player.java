@@ -28,6 +28,12 @@ public class Player {
         return hand.isEmpty();
     }
     public int score() {return score;}
+    public void clearHand() {
+        hand.clear();
+        possibleMoves.clear();
+        return;
+    }
+
 
     public void print() {
         System.out.print(name+": " +score+ "\t\t\t");

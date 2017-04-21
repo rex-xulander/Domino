@@ -1,6 +1,4 @@
-/**
- * Created by Rex on 4/13/17.
- */
+
 
 public class Game {
     Player p1;
@@ -9,8 +7,10 @@ public class Game {
 
     Board board;
 
-    public enum State { P1TURN, P2TURN, END }
+    public enum Turn { P1TURN, P2TURN }
+    public enum State { Play, Pass, End }
 
+    public Turn turn;
     public State state;
 
     public Game() {
@@ -25,9 +25,9 @@ public class Game {
 
     /* Game Status Information */
     public boolean isNotOver() {
-        return (state != State.END);
+        return (state != State.End);
     }
-    public boolean isPlayer1Turn() { return (state == State.P1TURN); }
+    public boolean isPlayer1Turn() { return (turn == Turn.P1TURN); }
     public Player getCurrentPlayer() {
         return isPlayer1Turn() ? p1:p2;
     }
@@ -36,6 +36,7 @@ public class Game {
     }
 
     /* GAME ACTIONS */
+    //Deals hands to both players and sets turn to player with highest piece
     public void start() {
         dealer.dealFullHand(p1.hand);
         dealer.dealFullHand(p2.hand);
@@ -48,27 +49,29 @@ public class Game {
 
         if (p1Highest.greaterThan(p2Highest)) {
             p1.possibleMoves.add(new FirstMove(p1Highest));
-            state = State.P1TURN;
+            turn = Turn.P1TURN;
         } else {
             p2.possibleMoves.add(new FirstMove(p2Highest));
-            state = State.P2TURN;
+            turn = Turn.P2TURN;
         }
 
 
         return;
     }
+    //Reads in move choice from IO
     public void makeMove(int moveIndex){
-        //TODO: validate move
+        //TODO: validate move with GUI
+        state = State.Play;
 
-        if(state == State.P1TURN) {
-            makeMove(p1, p1.possibleMoves.get(moveIndex));
+        if(turn == Turn.P1TURN) {
+            makeMoveOnBoard(p1, p1.possibleMoves.get(moveIndex));
             return;
-        } else if (state == State.P2TURN) {
-            makeMove(p2, p2.possibleMoves.get(moveIndex));
+        } else if (turn == Turn.P2TURN) {
+            makeMoveOnBoard(p2, p2.possibleMoves.get(moveIndex));
             return;
         }
     }
-    private void makeMove(Player p, Move m) {
+    private void makeMoveOnBoard(Player p, Move m) {
         board.placePiece(m);
         p.hand.remove(m.playerPiece);
 
@@ -78,6 +81,12 @@ public class Game {
         dealer.dealSingleTile(player.hand);
         return;
     }
+    public boolean boneyardNotEmpty() {
+        return (!dealer.deck.isEmpty());
+    }
+    public void pass() {
+        state = State.Pass;
+    }
 
     public void updatePlayerScore(Player p) {
         int score = board.boardScore();
@@ -85,14 +94,6 @@ public class Game {
             p.addScore(score);
         }
     }
-    public void changePlayer() {
-        if(state == State.P1TURN) {
-            state = State.P2TURN;
-        } else {
-            state = State.P1TURN;
-        }
-    }
-
     public void updatePossibleMoves (Player player) {
         player.possibleMoves.clear();
         for(Piece pieceInHand : player.hand) {
@@ -101,6 +102,23 @@ public class Game {
                     player.possibleMoves.add(new Move(opening.connectingValue(), opening.piece(), pieceInHand));
                 }
             }
+        }
+    }
+
+    public void checkForVictor() {
+        if (p1.finishedHand() || p2.finishedHand()) {
+            state = State.End;
+        }
+        if (p1.score() == Domino.WINNING_SCORE || p2.score() == Domino.WINNING_SCORE) {
+            state = State.End;
+        }
+        return;
+    }
+    public void changePlayer() {
+        if(turn == Turn.P1TURN) {
+            turn = Turn.P2TURN;
+        } else {
+            turn = Turn.P1TURN;
         }
     }
 

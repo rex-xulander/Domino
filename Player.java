@@ -24,6 +24,10 @@ public class Player {
         this.score += points;
     }
     public boolean hasNoMoves() { return possibleMoves.isEmpty(); }
+    public boolean finishedHand() {
+        return hand.isEmpty();
+    }
+    public int score() {return score;}
 
     public void print() {
         System.out.print(name+": " +score+ "\t\t\t");

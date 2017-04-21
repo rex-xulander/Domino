@@ -37,11 +37,14 @@ public class Domino
             game.updatePossibleMoves(player);
         }
         else {
-            System.out.print("\n\n" + "Enter move: ");
+            System.out.println("\n\n"+"Same piece moves orderd by LRUD");
+            System.out.print("Enter move (1 to end): ");
             int n = reader.nextInt();
 
+            //TODO: if there are two spinner openings, L and U moves are played first because of checking order
+
             System.out.println();
-            game.makeMove(n);
+            game.makeMove(n-1);
 
             game.updatePossibleMoves(other);
             game.changePlayer();

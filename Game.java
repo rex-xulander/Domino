@@ -131,7 +131,6 @@ public class Game {
             piece.print();
         }
     }
-
     //INNER CLASSES
     public class Move {
         int connectingValue;

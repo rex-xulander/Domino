@@ -16,7 +16,6 @@ public class Board {
     Piece spinner;
     boolean canPlayVertical = false;
 
-
     public void placePiece(Game.Move move) {
         if(move instanceof Game.FirstMove) {
             placeFirstPiece(move);
@@ -39,6 +38,7 @@ public class Board {
     }
     private void placeFirstPiece(Game.Move firstMove) {
         Piece playedPiece = firstMove.playerPiece;
+        tryToSetSpinner(playedPiece);
 
         openings.add(new Opening(playedPiece.left, playedPiece, Direction.LEFT));
         openings.add(new Opening(playedPiece.right, playedPiece, Direction.RIGHT));
